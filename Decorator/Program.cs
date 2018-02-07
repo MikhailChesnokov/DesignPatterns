@@ -1,66 +1,58 @@
 ﻿using static System.Console;
 
-namespace Decorator
+namespace Structural.Decorator
 {
-    internal interface IHtmlTag
+    internal interface IComponent
     {
-        void Print();
+        void Operation();
     }
 
-    internal class Body : IHtmlTag
+    internal class ConcreteComponent : IComponent
     {
-        public void Print()
+        public void Operation()
         {
-            Write(
-                "<body>\n" +
-                "    <h3>It Works</h3>\n" +
-                "</body>\n");
+            Write("World!");
         }
     }
 
-    internal abstract class Decorator : IHtmlTag
+    internal abstract class Decorator : IComponent
     {
-        protected IHtmlTag HtmlTag { get; }
+        protected IComponent Component { get; }
 
-        protected Decorator(IHtmlTag htmlTag)
+        protected Decorator(IComponent component)
         {
-            HtmlTag = htmlTag;
+            Component = component;
         }
 
-        public virtual void Print()
+        public virtual void Operation()
         {
-            HtmlTag.Print();
-        }
-    }
-
-    internal class HeadTagDecorator : Decorator
-    {
-        public HeadTagDecorator(IHtmlTag htmlTag)
-            : base(htmlTag) { }
-
-        public override void Print()
-        {
-            Write(
-                "<head>\n" +
-                "    <title>SomePage</title>\n" +
-                "</head>\n");
-
-            base.Print();
+            Component.Operation();
         }
     }
 
-    internal class HtmlTagDecorator : Decorator
+    internal class ConcreteDecoratorB : Decorator
     {
-        public HtmlTagDecorator(IHtmlTag htmlTag)
-            : base(htmlTag) { }
+        public ConcreteDecoratorB(IComponent component)
+            : base(component) { }
 
-        public override void Print()
+        public override void Operation()
         {
-            Write("<html>\n");
+            Write(", ");
 
-            base.Print();
+            base.Operation();
+        }
+    }
 
-            Write("</html>\n");
+    internal class ConcreteDecoratorA : Decorator
+    {
+        public ConcreteDecoratorA(IComponent component)
+            : base(component) { }
+
+        public override void Operation()
+        {
+            Write("Hello");
+
+            base.Operation();
         }
     }
 
@@ -68,9 +60,9 @@ namespace Decorator
     {
         private static void Main()
         {
-            Decorator htmlPage = new HtmlTagDecorator(new HeadTagDecorator(new Body()));
+            Decorator decorator = new ConcreteDecoratorA(new ConcreteDecoratorB(new ConcreteComponent()));
 
-            htmlPage.Print();
+            decorator.Operation();
         }
     }
 }

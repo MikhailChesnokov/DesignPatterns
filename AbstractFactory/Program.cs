@@ -1,6 +1,6 @@
 ﻿using static System.Console;
 
-namespace Structural.AbstractFactory
+namespace Creational.AbstractFactory
 {
     internal interface IAbstractFactory
     {
