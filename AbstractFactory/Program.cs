@@ -1,96 +1,96 @@
 ﻿using static System.Console;
 
-namespace AbstractFactory
+namespace Structural.AbstractFactory
 {
-    internal interface IUserInterfaceAbstractFactory
+    internal interface IAbstractFactory
     {
-        IAbsractWindow CreateWindow();
-        IAbstractButton CreateButton();
+        IAbsractProbuctA CreateProductA();
+        IAbstractProductB CreateProductB();
     }
 
-    internal interface IAbsractWindow
+    internal interface IAbsractProbuctA
     {   
-        void Interact(IAbstractButton button);
+        void Interact(IAbstractProductB productB);
     }
 
-    internal interface IAbstractButton
+    internal interface IAbstractProductB
     {
-        void Interact(IAbsractWindow window);
+        void Interact(IAbsractProbuctA probuctA);
     }
 
-    internal class LinuxWindow : IAbsractWindow
+    internal class ConcreteProbuctA1 : IAbsractProbuctA
     {
-        public void Interact(IAbstractButton button)
+        public void Interact(IAbstractProductB productB)
         {
-            WriteLine("The instance of " + typeof(LinuxWindow).Name + " is interacting with the instance of " + button.GetType().Name);
+            WriteLine("The instance of " + typeof(ConcreteProbuctA1).Name + " is interacting with the instance of " + productB.GetType().Name);
         }
     }
 
-    internal class AppleWindow : IAbsractWindow
+    internal class ConcreteProductA2 : IAbsractProbuctA
     {
-        public void Interact(IAbstractButton button)
+        public void Interact(IAbstractProductB productB)
         {
-            WriteLine("The instance of " + typeof(AppleWindow).Name + " is interacting with the instance of " + button.GetType().Name);
+            WriteLine("The instance of " + typeof(ConcreteProductA2).Name + " is interacting with the instance of " + productB.GetType().Name);
         }
     }
 
-    internal class LinuxButton : IAbstractButton
+    internal class ConcreteProductB1 : IAbstractProductB
     {
-        public void Interact(IAbsractWindow window)
+        public void Interact(IAbsractProbuctA probuctA)
         {
-            WriteLine("The instance of " + typeof(LinuxButton).Name + " is interacting with the instance of " + window.GetType().Name);
+            WriteLine("The instance of " + typeof(ConcreteProductB1).Name + " is interacting with the instance of " + probuctA.GetType().Name);
         }
     }
 
-    internal class AppleButton : IAbstractButton
+    internal class ConcreteProductB2 : IAbstractProductB
     {
-        public void Interact(IAbsractWindow window)
+        public void Interact(IAbsractProbuctA probuctA)
         {
-            WriteLine("The instance of " + typeof(AppleButton).Name + " is interacting with the instance of " + window.GetType().Name);
+            WriteLine("The instance of " + typeof(ConcreteProductB2).Name + " is interacting with the instance of " + probuctA.GetType().Name);
         }
     }
 
-    internal class LinuxFactory : IUserInterfaceAbstractFactory
+    internal class ConcreteFactory1 : IAbstractFactory
     {
-        public IAbsractWindow CreateWindow()
+        public IAbsractProbuctA CreateProductA()
         {
-            return new LinuxWindow();
+            return new ConcreteProbuctA1();
         }
 
-        public IAbstractButton CreateButton()
+        public IAbstractProductB CreateProductB()
         {
-            return new LinuxButton();
+            return new ConcreteProductB1();
         }
     }
 
-    internal class AppleFactory : IUserInterfaceAbstractFactory
+    internal class ConcreteFactory2 : IAbstractFactory
     {
-        public IAbsractWindow CreateWindow()
+        public IAbsractProbuctA CreateProductA()
         {
-            return new AppleWindow();
+            return new ConcreteProductA2();
         }
 
-        public IAbstractButton CreateButton()
+        public IAbstractProductB CreateProductB()
         {
-            return new AppleButton();
+            return new ConcreteProductB2();
         }
     }
 
     internal class Client
     {
-        private readonly IAbsractWindow _window;
-        private readonly IAbstractButton _button;
+        private readonly IAbsractProbuctA _probuctA;
+        private readonly IAbstractProductB _productB;
         
-        public Client(IUserInterfaceAbstractFactory factory)
+        public Client(IAbstractFactory factory)
         {
-            _window = factory.CreateWindow();
-            _button = factory.CreateButton();
+            _probuctA = factory.CreateProductA();
+            _productB = factory.CreateProductB();
         }
 
-        public void OnInteract()
+        public void InteractWithEachOther()
         {
-            _window.Interact(_button);
-            _button.Interact(_window);
+            _probuctA.Interact(_productB);
+            _productB.Interact(_probuctA);
         }
     }
 
@@ -98,13 +98,13 @@ namespace AbstractFactory
     {
         private static void Main()
         {
-            Client client1 = new Client(new AppleFactory());
+            Client client1 = new Client(new ConcreteFactory1());
             
-            client1.OnInteract();
+            client1.InteractWithEachOther();
             
-            Client client2 = new Client(new LinuxFactory());
+            Client client2 = new Client(new ConcreteFactory2());
             
-            client2.OnInteract();
+            client2.InteractWithEachOther();
         }
     }
 }
