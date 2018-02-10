@@ -6,7 +6,7 @@ namespace Creational.Prototype
     {
         protected Prototype() { }
 
-        protected Prototype(Prototype prototype) { }
+        protected Prototype(Prototype prototypeDerived) { }
 
         public virtual Prototype Clone()
         {
@@ -16,10 +16,15 @@ namespace Creational.Prototype
 
     class ConcretePrototype : Prototype
     {
+        public int[] ReferenceTypeField = new int[1];
+
         public ConcretePrototype() { }
 
-        protected ConcretePrototype(ConcretePrototype concretePrototypeDerived)
-            : base(concretePrototypeDerived) { }
+        protected ConcretePrototype(ConcretePrototype concretePrototype)
+            : base(concretePrototype)
+        {
+            ReferenceTypeField = new int[concretePrototype.ReferenceTypeField.Length];
+        }
 
         public override Prototype Clone()
         {
@@ -47,6 +52,15 @@ namespace Creational.Prototype
             Prototype prototype = new ConcretePrototypeDerived();
 
             Prototype prototypeCopy = prototype.Clone();
+
+            Console.WriteLine("The instance of " + prototype.GetType().Name +
+                              " is not equal to instance of " + prototypeCopy.GetType().Name +
+                              ": " + (prototype != prototypeCopy));
+
+            Console.WriteLine("The reference fields of " + prototype.GetType().Name +
+                              " is not equal to reference fields of " + prototypeCopy.GetType().Name + ": " +
+                              (((ConcretePrototypeDerived) prototype).ReferenceTypeField !=
+                               ((ConcretePrototypeDerived) prototypeCopy).ReferenceTypeField));
         }
     }
 }

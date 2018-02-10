@@ -1,12 +1,14 @@
 ﻿using System;
 
-namespace Singleton
+namespace Creational.Singleton
 {
     sealed class Singleton
     {
-        private static Singleton _instance;
         private static readonly object LockObject = new object();
+        
+        private static Singleton _instance;
 
+        
         private Singleton() { }
 
         public static Singleton Instance()
@@ -32,7 +34,7 @@ namespace Singleton
             Singleton singleton1 = Singleton.Instance();
             Singleton singleton2 = Singleton.Instance();
 
-            Console.WriteLine(singleton1 == singleton2);
+            Console.WriteLine("The singleton1 instance is equal to singleton2 instance: " + (singleton1 == singleton2));
         }
     }
 }
