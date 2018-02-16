@@ -59,7 +59,7 @@ namespace Behavioral.Command
             ICommand command = new ConcreteCommand1(receiver);
 
             Invoker invoker = new Invoker(command);
-            
+
             invoker.ExecuteCommand();
         }
     }
